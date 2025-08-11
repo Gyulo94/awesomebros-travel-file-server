@@ -1,5 +1,6 @@
 import { InternalServerErrorException } from '@nestjs/common';
-import * as fs from 'fs/promises';
+import * as fs from 'fs';
+import * as fsp from 'fs/promises';
 import * as path from 'path';
 
 const UPLOAD_DESTINATION_BASE = '/home/gyubuntu/project/media/trip_gg_uploads';
@@ -8,8 +9,8 @@ const BASE_URL_FOR_FILES = 'https://gyubuntu.duckdns.org/trip_gg/media/';
 
 async function ensureDirectoryExists(directoryPath: string) {
   try {
-    if (!fs.existsSync(directoryPath)) { 
-      await fs.mkdir(directoryPath, { recursive: true });
+    if (!fsp.existsSync(directoryPath)) { 
+      await fsp.mkdir(directoryPath, { recursive: true });
       console.log(`Directory created: ${directoryPath}`);
     } else {
       console.log(`Directory already exists: ${directoryPath}`);
