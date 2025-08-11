@@ -58,7 +58,7 @@ export class MulterConfigService implements MulterOptionsFactory {
         if (file.mimetype.startsWith('image/')) {
           callback(null, true);
         } else {
-           callback(new Error('허용되지 않는 파일 형식입니다. (이미지 파일만 허용)'), false);
+           callback(null, false);
         }
       },
     };
