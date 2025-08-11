@@ -13,7 +13,7 @@ export async function handleImagePersistence(
   entityType: string,
 ): Promise<string[]> {
   const baseUploadDir = path.join(
-    BASE_URL_FOR_FILES,
+    UPLOAD_DESTINATION,
     'images',
     entityType,
   );
@@ -47,7 +47,7 @@ export async function handleImagePersistence(
           `새 이미지 이동 성공: ${imageTempPath} -> ${finalDestinationPath}`,
         );
         finalImageUrls.push(
-          `${BASE_URL_FOR_FILES}/images/${entityType}/${entityId}/${actualFilename}`,
+          `${BASE_URL_FOR_FILES}images/${entityType}/${entityId}/${actualFilename}`,
         );
       } catch (error) {
         console.error(`새 이미지 이동 실패: ${imageTempPath}`, error);
@@ -92,7 +92,7 @@ export async function deleteImageFolder(
   entityType: string,
 ): Promise<void> {
   const baseUploadDir = path.join(
-    BASE_URL_FOR_FILES,
+    UPLOAD_DESTINATION,
     'images',
     entityType,
   );
