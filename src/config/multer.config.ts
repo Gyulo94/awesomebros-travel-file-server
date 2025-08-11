@@ -7,37 +7,53 @@ import * as uuid from 'uuid';
 
 @Injectable()
 export class MulterConfigService implements MulterOptionsFactory {
-  dirPath: string;
-  baseUrl: string;
+   private readonly UPLOAD_DESTINATION: string;
+  private readonly BASE_URL_FOR_FILES: string;
   constructor() {
-    this.dirPath = path.join('/app/uploads', 'temp');
-    this.baseUrl = `${process.env.SERVER_URL}/uploads/temp`;
+    this.UPLOAD_DESTINATION =
+      process.env.UPLOAD_DESTINATION ||
+      '/home/gyubuntu/project/media/trip_gg_uploads';
+
+    this.BASE_URL_FOR_FILES =
+      process.env.BASE_URL_FOR_FILES ||
+      'https://gyubuntu.duckdns.org/trip_gg/media/';
     this.mkdir();
   }
 
   mkdir() {
-    try {
-      fs.readdirSync(this.dirPath);
+     try {
+      if (!fs.existsSync(this.UPLOAD_DESTINATION)) {
+        fs.mkdirSync(this.UPLOAD_DESTINATION, { recursive: true });
+        console.log(`Upload directory created: ${this.UPLOAD_DESTINATION}`);
+      } else {
+        console.log(`Upload directory already exists: ${this.UPLOAD_DESTINATION}`);
+      }
     } catch (err) {
-      fs.mkdirSync(this.dirPath);
+      console.error(
+        `Failed to create upload directory ${this.UPLOAD_DESTINATION}:`,
+        err,
+      );
+      throw new Error(`파일 업로드 디렉토리 생성 실패: ${err.message}`);
     }
   }
 
-  createMulterOptions() {
-    const dirPath = this.dirPath;
-    const option = {
+  createMulterOptions(): multer.Options {
+    const option: multer.Options = {
       storage: multer.diskStorage({
-        destination(req, file, done) {
-          done(null, dirPath);
+        destination: (req, file, done) => {
+          done(null, this.UPLOAD_DESTINATION);
         },
 
-        filename(req, file, done) {
+        filename: (req, file, done) => {
           const ext = path.extname(file.originalname);
-          const name = path.basename(uuid.v7(), ext);
-          done(null, `${name}_${Date.now()}${ext}`);
+          const name = uuid.v4();
+
+          done(null, `${name}${ext}`);
         },
       }),
-      limits: { fileSize: 1000 * 1024 * 1024 },
+      limits: {
+        fileSize: 100 * 1024 * 1024,
+      },
       fileFilter: (req, file, callback) => {
         if (file.mimetype.startsWith('image/')) {
           callback(null, true);
@@ -51,7 +67,9 @@ export class MulterConfigService implements MulterOptionsFactory {
     };
     return option;
   }
+
   getFileUrl(filename: string): string {
-    return `${this.baseUrl}/${filename}`;
+    // baseUrl 대신 BASE_URL_FOR_FILES 사용
+    return `${this.BASE_URL_FOR_FILES}${filename}`;
   }
 }
