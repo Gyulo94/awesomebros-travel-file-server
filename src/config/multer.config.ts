@@ -14,11 +14,11 @@ export class MulterConfigService implements MulterOptionsFactory {
   constructor() {
     this.UPLOAD_DESTINATION =
       process.env.UPLOAD_DESTINATION ||
-      '/home/gyubuntu/project/media/trip_gg_uploads'; 
+      '/home/gyubuntu/project/media/uploads'; 
 
     this.BASE_URL_FOR_FILES =
       process.env.BASE_URL_FOR_FILES ||
-      'https://gyubuntu.duckdns.org/trip_gg/media/';
+      'https://gyubuntu.duckdns.org/media/';
 
     // UPLOAD_DESTINATION 안에 'temp' 서브 디렉토리를 임시 저장소로 사용
     this.TEMP_UPLOAD_DESTINATION = path.join(this.UPLOAD_DESTINATION, 'temp');
