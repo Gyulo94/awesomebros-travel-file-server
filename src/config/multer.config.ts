@@ -54,7 +54,12 @@ export class MulterConfigService implements MulterOptionsFactory {
         filename: (req, file, done) => {
           const ext = path.extname(file.originalname);
           const name = uuid.v4(); 
-          done(null, `${name}${ext}`);
+          const now = new Date();
+          const year = now.getFullYear();
+          const month = (now.getMonth() + 1).toString().padStart(2, '0');
+          const day = now.getDate().toString().padStart(2, '0');
+          const datePrefix = `${year}${month}${day}`;
+           done(null, `${datePrefix}_${name}${ext}`);
         },
       }),
       limits: {

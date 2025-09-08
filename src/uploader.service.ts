@@ -12,7 +12,7 @@ export class UploaderService {
     if (!image) {
       throw new NotFoundException('해당 이미지를 찾을 수 없습니다.');
     }
-    const fileUrl = `https://gyubuntu.duckdns.org/media/temp/${image.filename}`;
+    const fileUrl = `https://gyubuntu.duckdns.org/uploads/temp/${image.filename}`;
     return fileUrl;
   }
 
