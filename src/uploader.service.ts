@@ -12,19 +12,20 @@ export class UploaderService {
     if (!image) {
       throw new NotFoundException('해당 이미지를 찾을 수 없습니다.');
     }
-    const fileUrl = `https://gyubuntu.duckdns.org/trip_gg/media/temp/${image.filename}`;
+    const fileUrl = `https://gyubuntu.duckdns.org/media/temp/${image.filename}`;
     return fileUrl;
   }
 
   async createImg(dto: ImageDto) {
-    const { id, images, entity } = dto;
-    return await handleImagePersistence(id, images ? images : [], [], entity);
+    const { id, serviceName, images, entity } = dto;
+    return await handleImagePersistence(id, serviceName, images ? images : [], [], entity);
   }
 
   async upadteImg(dto: ImageDto) {
-    const { id, images, entity, existingImages } = dto;
+    const { id, serviceName, images, entity, existingImages } = dto;
     return await handleImagePersistence(
       id,
+      serviceName,
       images ? images : [],
       existingImages ? existingImages : [],
       entity,
@@ -32,8 +33,8 @@ export class UploaderService {
   }
 
   async deleteImg(dto: ImageDto) {
-    const { id, entity } = dto;
-    await deleteImageFolder(id, entity);
+    const { id, serviceName, entity } = dto;
+    await deleteImageFolder(id,serviceName, entity);
     return { success: true };
   }
 }

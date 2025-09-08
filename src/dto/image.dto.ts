@@ -1,6 +1,10 @@
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class ImageDto {
+
+  @IsString()
+  serviceName: string;
+
   @IsString()
   id: string;
 

@@ -2,18 +2,19 @@ import { InternalServerErrorException } from '@nestjs/common';
 import * as fs from 'fs/promises';
 import * as path from 'path';
 
-const UPLOAD_DESTINATION = '/home/gyubuntu/project/media/trip_gg_uploads';
+const UPLOAD_DESTINATION = '/home/gyubuntu/project/media/uploads/';
 const TEMP_UPLOAD_DESTINATION = path.join(UPLOAD_DESTINATION, 'temp');
-const BASE_URL_FOR_FILES = 'https://gyubuntu.duckdns.org/trip_gg/media/';
+const BASE_URL_FOR_FILES = 'https://gyubuntu.duckdns.org/media/';
 
 export async function handleImagePersistence(
   entityId: string,
+  serviceName: string,
   desiredImageFilenames: string[] = [],
   oldImageUrlsFromDb: string[] = [],
   entityType: string,
 ): Promise<string[]> {
   const baseUploadDir = path.join(
-    UPLOAD_DESTINATION,
+    UPLOAD_DESTINATION + serviceName,
     'images',
     entityType,
   );
@@ -89,10 +90,11 @@ export async function handleImagePersistence(
 
 export async function deleteImageFolder(
   entityId: string,
+  serviceName: string,
   entityType: string,
 ): Promise<void> {
   const baseUploadDir = path.join(
-    UPLOAD_DESTINATION,
+    UPLOAD_DESTINATION + serviceName,
     'images',
     entityType,
   );
