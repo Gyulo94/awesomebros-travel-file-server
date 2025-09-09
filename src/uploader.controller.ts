@@ -16,10 +16,10 @@ import { UploaderService } from './uploader.service';
 export class UploaderController {
   constructor(private readonly uploaderService: UploaderService) {}
 
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('files'))
   @Post('image')
-  async uploadImage(@UploadedFile() image: Express.Multer.File) {
-    return await this.uploaderService.uploadImage(image);
+  async uploadImage(@UploadedFile() images: Express.Multer.File[]) {
+    return await this.uploaderService.uploadImage(images);
   }
 
   @Post(':serviceName/create')

@@ -8,12 +8,12 @@ import {
 
 @Injectable()
 export class UploaderService {
-  uploadImage(image: Express.Multer.File) {
-    if (!image) {
+  uploadImage(images: Express.Multer.File[]){
+    if (!images || images.length === 0) {
       throw new NotFoundException('해당 이미지를 찾을 수 없습니다.');
     }
-    const fileUrl = `https://gyubuntu.duckdns.org/uploads/temp/${image.filename}`;
-    return fileUrl;
+    const fileUrls = images.map(image => `https://gyubuntu.duckdns.org/uploads/temp/${image.filename}`);
+    return fileUrls;
   }
 
   async createImg(serviceName: string, dto: ImageDto) {
